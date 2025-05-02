@@ -48,7 +48,7 @@
           <el-date-picker v-model="form.bpasterTime" type="date" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item label="组桥图">
-          <el-upload ref="uploadRef" class="avatar-uploader" action="http://8.155.12.207:8888/upload/avatar"
+          <el-upload ref="uploadRef" class="avatar-uploader" action="http://localhost:8081/file/upload"
             :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="form.bprocessPhoto" :src="form.bprocessPhoto" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon">

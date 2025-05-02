@@ -57,7 +57,7 @@
         </el-form-item>
 
         <el-form-item label="上传">
-          <el-upload ref="uploadRef" class="avatar-uploader" action="http://8.155.12.207:8888/upload/avatar"
+          <el-upload ref="uploadRef" class="avatar-uploader" action="http://localhost:8081/file/upload"
             :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <template #trigger>
               <el-button type="primary">选择文件</el-button>
@@ -185,31 +185,38 @@ const handleAdd = () => {
 const handleDownload = (index, row) => {
 
   
-  axios({
-    url: row.filePath, // 后端的 API 路径
+  // axios({
+  //   url: row.filePath, // 后端的 API 路径
     
-    method: 'GET',
-    responseType: 'blob' // 指定响应类型为 blob，处理二进制数据
-  }).then(response => {
-    // 创建一个 Blob 对象
-    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //   method: 'GET',
+  //   responseType: 'blob' // 指定响应类型为 blob，处理二进制数据
+  // }).then(response => {
+  //   // 创建一个 Blob 对象
+  //   const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    // 创建下载链接
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.href = url;
-    link.setAttribute('download', row.fileName); // 设置下载文件名
+  //   // 创建下载链接
+  //   const link = document.createElement('a');
+  //   const url = URL.createObjectURL(blob);
+  //   link.href = url;
+  //   link.setAttribute('download', row.fileName); // 设置下载文件名
 
-    // 触发下载
-    document.body.appendChild(link);
-    link.click();
+  //   // 触发下载
+  //   document.body.appendChild(link);
+  //   link.click();
 
-    // 移除链接
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }).catch(error => {
-    console.error("Download failed:", error);
-  });
+  //   // 移除链接
+  //   document.body.removeChild(link);
+  //   URL.revokeObjectURL(url);
+  // }).catch(error => {
+  //   console.error("Download failed:", error);
+  // });
+  const url = `http://localhost:8081/file/download?path=${encodeURIComponent(row.filePath)}`
+  const link = document.createElement('a')
+  link.href = url
+  link.download = ''
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 
 }
 

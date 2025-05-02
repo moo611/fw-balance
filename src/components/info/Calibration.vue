@@ -2,7 +2,8 @@
   <div>
     <div class="header">
       <el-button v-show="false" type="primary" @click="getBalanceCalibrationList">查询</el-button>
-      <el-button @click="handleAdd" type="primary" class="btn-add" v-permission="'details.calibration.add'">新增</el-button>
+      <el-button @click="handleAdd" type="primary" class="btn-add"
+        v-permission="'details.calibration.add'">新增</el-button>
     </div>
     <el-table class="my-table" :data="state.data.list">
       <el-table-column type="index" label="序号" />
@@ -13,13 +14,15 @@
 
       <el-table-column label="操作" width="200">
         <template #default="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-permission="'details.calibration.edit'">
+          <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)"
+            v-permission="'details.calibration.edit'">
             编辑
           </el-button>
           <el-button type="primary" size="small" @click="handleDownload(scope.$index, scope.row)">
             下载
           </el-button>
-          <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)" v-permission="'details.calibration.del'">
+          <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)"
+            v-permission="'details.calibration.del'">
             删除
           </el-button>
         </template>
@@ -39,7 +42,7 @@
           <el-date-picker v-model="form.bcalibrationTime" type="date" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item label="上传">
-          <el-upload ref="uploadRef" class="avatar-uploader" action="http://8.155.12.207:8888/upload/avatar"
+          <el-upload ref="uploadRef" class="avatar-uploader" action="http://localhost:8081/file/upload"
             :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <template #trigger>
               <el-button type="primary">选择文件</el-button>
@@ -112,32 +115,39 @@ const clearData = () => {
 
 const handleDownload = (index, row) => {
 
-  
-axios({
-  url: row.bcalibrationFile, // 后端的 API 路径
-  
-  method: 'GET',
-  responseType: 'blob' // 指定响应类型为 blob，处理二进制数据
-}).then(response => {
-  // 创建一个 Blob 对象
-  const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-  // 创建下载链接
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  link.href = url;
-  link.setAttribute('download', row.bcalibrationName); // 设置下载文件名
+  // axios({
+  //   url: row.bcalibrationFile, // 后端的 API 路径
 
-  // 触发下载
-  document.body.appendChild(link);
-  link.click();
+  //   method: 'GET',
+  //   responseType: 'blob' // 指定响应类型为 blob，处理二进制数据
+  // }).then(response => {
+  //   // 创建一个 Blob 对象
+  //   const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-  // 移除链接
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}).catch(error => {
-  console.error("Download failed:", error);
-});
+  //   // 创建下载链接
+  //   const link = document.createElement('a');
+  //   const url = URL.createObjectURL(blob);
+  //   link.href = url;
+  //   link.setAttribute('download', row.bcalibrationName); // 设置下载文件名
+
+  //   // 触发下载
+  //   document.body.appendChild(link);
+  //   link.click();
+
+  //   // 移除链接
+  //   document.body.removeChild(link);
+  //   URL.revokeObjectURL(url);
+  // }).catch(error => {
+  //   console.error("Download failed:", error);
+  // });
+  const url = `http://localhost:8081/file/download?path=${encodeURIComponent(row.filePath)}`
+  const link = document.createElement('a')
+  link.href = url
+  link.download = ''
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 
 }
 const handleAvatarSuccess = (response, uploadFile) => {

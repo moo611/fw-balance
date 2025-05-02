@@ -13,7 +13,7 @@
         <el-input v-model="state.form.supportAng" />
       </el-form-item>
       <el-form-item label="结构图">
-          <el-upload ref="uploadRef" class="avatar-uploader" action="http://8.155.12.207:8888/upload/avatar"
+          <el-upload ref="uploadRef" class="avatar-uploader" action="http://localhost:8081/file/upload"
             :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="state.form.supportPic" :src="state.form.supportPic" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon">
